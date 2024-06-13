@@ -1,4 +1,5 @@
 ![screenshot](./frontend/src/assets/logo/full-black-logo.svg)
+[![instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/luminds.id/)
 
 # Luminds
 Luminds adalah platform layanan kesehatan mental yang berkomitmen untuk menyediakan dukungan psikologis profesional, empatik, dan mudah diakses bagi generasi muda. Kami menyediakan berbagai layanan, termasuk konsultasi online, ruang aman untuk berbagi cerita, serta program edukasi dan kampanye kesadaran kesehatan mental.
