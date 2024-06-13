@@ -1,4 +1,4 @@
-![screenshot](./frontend/src/assets/logo/full-white-logo.svg)
+![screenshot](./frontend/src/assets/logo/full-black-logo.svg)
 
 # Luminds
 Luminds adalah platform layanan kesehatan mental yang berkomitmen untuk menyediakan dukungan psikologis profesional, empatik, dan mudah diakses bagi generasi muda. Kami menyediakan berbagai layanan, termasuk konsultasi online, ruang aman untuk berbagi cerita, serta program edukasi dan kampanye kesadaran kesehatan mental.
