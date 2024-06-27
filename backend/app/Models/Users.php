@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\KomentarQuest;
 use App\Models\Konsultasi;
 use App\Models\PivotFavoritPendengar;
@@ -13,7 +14,7 @@ use App\Models\RiwayatKonsultasi;
 use App\Models\ChatKonsultasi;
 
 
-class Users extends Model
+class Users extends Authenticatable
 {
     use HasFactory;
 
