@@ -41,21 +41,21 @@ class LoginController extends Controller
 
         if($level_akun == 'admin'){
             if(Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password])){
-                session()->regenerate();
+                session()->save();
                 return response()->json(['messages' => 'Berhasil login sebagai admin'], 200);
             }
         }
         
         if($level_akun == 'pendengar'){
             if(Auth::guard('pendengar')->attempt(['email' => $request->email, 'password' => $request->password])){
-                session()->regenerate();
+                session()->save();
                 return response()->json(['messages' => 'Berhasil login sebagai pendengar'], 200);
             }
         }
 
         if($level_akun == 'user'){
             if(Auth::guard('users')->attempt(['email' => $request->email, 'password' => $request->password])){
-                session()->regenerate();
+                session()->save();
                 return response()->json(['messages' => 'Berhasil login sebagai user'], 200);
             }
         }
@@ -70,6 +70,7 @@ class LoginController extends Controller
     }
 
     public function test(){
+        return auth()->user();
         return 'test';
     }
 }
