@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
+    public function index(){
+        auth()->user();
+        return view('login');
+    }
+
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(),
@@ -36,18 +41,21 @@ class LoginController extends Controller
 
         if($level_akun == 'admin'){
             if(Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password])){
+                session()->regenerate();
                 return response()->json(['messages' => 'Berhasil login sebagai admin'], 200);
             }
         }
         
         if($level_akun == 'pendengar'){
             if(Auth::guard('pendengar')->attempt(['email' => $request->email, 'password' => $request->password])){
+                session()->regenerate();
                 return response()->json(['messages' => 'Berhasil login sebagai pendengar'], 200);
             }
         }
 
         if($level_akun == 'user'){
             if(Auth::guard('users')->attempt(['email' => $request->email, 'password' => $request->password])){
+                session()->regenerate();
                 return response()->json(['messages' => 'Berhasil login sebagai user'], 200);
             }
         }
