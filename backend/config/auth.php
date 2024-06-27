@@ -36,7 +36,17 @@ return [
     */
 
     'guards' => [
-        'web' => [
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admin',
+        ],
+
+        'pendengar' => [
+            'driver' => 'session',
+            'provider' => 'pendengar',
+        ],
+
+        'users' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
@@ -60,15 +70,20 @@ return [
     */
 
     'providers' => [
+        'admin' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
+        ],
+        
+        'pendengar' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Pendengar::class,
+        ],
+    
         'users' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
+            'model' => App\Models\Users::class,
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*

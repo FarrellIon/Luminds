@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Admin;
 use App\Models\PivotKategoriQuest;
 use App\Models\PivotKategoriPendengar;
 
@@ -19,5 +20,9 @@ class MasterKategoriQuest extends Model
 
     public function pivot_kategori_pendengar(){
         return $this->hasMany(PivotKategoriPendengar::class, 'kategori_id');
+    }
+
+    public function input_by(){
+        return $this->belongsTo(Admin::class, 'admin_id');
     }
 }

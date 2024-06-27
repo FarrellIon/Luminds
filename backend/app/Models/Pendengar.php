@@ -9,6 +9,7 @@ use App\Models\Konsultasi;
 use App\Models\PekerjaanPendengar;
 use App\Models\PivotFavoritPendengar;
 use App\Models\PivotRatingPendengar;
+use App\Models\PivotKategoriRatingPendengar;
 use App\Models\PivotKategoriPendengar;
 use App\Models\ChatKonsultasi;
 
@@ -40,6 +41,10 @@ class Pendengar extends Model
 
     public function pivot_kategori_pendengar(){
         return $this->hasMany(PivotKategoriPendengar::class, 'pendengar_id');
+    }
+
+    public function pivot_kategori_rating_pendengar(){
+        return $this->hasMany(PivotKategoriRatingPendengar::class, 'pendengar_id');
     }
 
     public function chat_konsultasi(){
