@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('komentar_quest', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('quest_id');
+            $table->unsignedBigInteger('quest_id');
             $table->foreign('quest_id')->references('id')->on('quests');
-            $table->unsignedInteger('user_id');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('komentar');
             $table->boolean('status_terbaik');
             $table->boolean('status_tutup');
-            $table->integer('max_partisipan');
-            $table->integer('hadiah');
+            $table->integer('max_partisipan')->nullable();
+            $table->integer('hadiah')->nullable();
             $table->timestamps();
         });
     }

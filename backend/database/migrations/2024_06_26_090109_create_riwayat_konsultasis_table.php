@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('riwayat_konsultasi', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->unsignedInteger('konsultasi_id');
+            $table->unsignedBigInteger('konsultasi_id');
             $table->foreign('konsultasi_id')->references('id')->on('konsultasi');
             $table->timestamps();
         });

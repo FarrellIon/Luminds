@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('pivot_kategori_quest', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('quest_id');
+            $table->unsignedBigInteger('quest_id');
             $table->foreign('quest_id')->references('id')->on('quests');
-            $table->unsignedInteger('kategori_id');
+            $table->unsignedBigInteger('kategori_id');
             $table->foreign('kategori_id')->references('id')->on('master_kategori_quest');
             $table->timestamps();
         });

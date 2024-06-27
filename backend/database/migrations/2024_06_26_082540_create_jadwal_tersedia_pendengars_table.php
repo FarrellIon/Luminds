@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('jadwal_tersedia_pendengar', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('pendengar_id');
+            $table->unsignedBigInteger('pendengar_id');
             $table->foreign('pendengar_id')->references('id')->on('pendengar');
             $table->date('tanggal');
             $table->timestamps();

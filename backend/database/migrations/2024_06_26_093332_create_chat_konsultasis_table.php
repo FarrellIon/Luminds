@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('chat_konsultasi', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('konsultasi_id');
+            $table->unsignedBigInteger('konsultasi_id');
             $table->foreign('konsultasi_id')->references('id')->on('konsultasi');
-            $table->unsignedInteger('user_id');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->unsignedInteger('pendengar_id');
+            $table->unsignedBigInteger('pendengar_id')->nullable();
             $table->foreign('pendengar_id')->references('id')->on('pendengar');
             $table->string('chat');
             $table->timestamps();

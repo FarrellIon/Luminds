@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('pivot_favorit_quest', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('quest_id');
+            $table->unsignedBigInteger('quest_id');
             $table->foreign('quest_id')->references('id')->on('quests');
-            $table->unsignedInteger('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });

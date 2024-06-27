@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('pivot_favorit_pendengar', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->unsignedInteger('pendengar_id');
+            $table->unsignedBigInteger('pendengar_id');
             $table->foreign('pendengar_id')->references('id')->on('pendengar');
             $table->timestamps();
         });

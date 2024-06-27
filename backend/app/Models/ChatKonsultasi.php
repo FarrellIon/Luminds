@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Konsultasi;
 use App\Models\Users;
 use App\Models\Pendengar;
-use App\Models\ChatKonsultasi;
 
 class ChatKonsultasi extends Model
 {
