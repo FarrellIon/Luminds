@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'admin',
         'passwords' => 'users',
     ],
 
@@ -40,15 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'admin',
         ],
+        'pendengar' => [
+            'driver' => 'session',
+            'provider' => 'pendengar',
+        ],
         'users' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
-        'pengajar' => [
-            'driver' => 'session',
-            'provider' => 'pengajar',
-        ],
-        'web' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
@@ -76,19 +72,14 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
         ],
+        'pendengar' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Pendengar::class,
+        ],
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\Users::class,
         ],
-        'pengajar' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Pengajar::class,
-        ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*
