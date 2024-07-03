@@ -10,10 +10,6 @@ use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
-    public function index(){
-        return view('login');
-    }
-
     public function login(Request $request)
     {
         if(!Auth::check()){
@@ -88,10 +84,5 @@ class LoginController extends Controller
         }
         
 
-    }
-
-    public function test(){
-        return auth()->user();
-        return 'test';
     }
 }
