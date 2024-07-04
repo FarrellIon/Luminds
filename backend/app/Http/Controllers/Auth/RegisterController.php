@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Admin;
@@ -106,17 +107,26 @@ class RegisterController extends Controller
             $variable = $this->controller_name;
 
             if($level_akun == 'admin'){
+                if(Admin::where('email', $request->email)->exists()){
+                    return response()->json(['errors' => 'Admin dengan email ini sudah terdaftar'], 401);
+                }
+
                 $$variable = new Admin();
                 $$variable->email = $request->email;
                 $$variable->password = Hash::make($request->password);
             }
             
             if($level_akun == 'pendengar'){
+                if(Pendengar::where('email', $request->email)->exists()){
+                    return response()->json(['errors' => 'Pendengar dengan email ini sudah terdaftar'], 401);
+                }
+
                 //Store image
                 $icon = $request->file('profile_picture');
                 $path = $icon->store('account/pendengar', 'public');
 
                 $$variable = new Pendengar();
+                $$variable->identifier = $this->randomNumber('pendengar');
                 $$variable->username = $request->username;
                 $$variable->deskripsi = $request->deskripsi;
                 $$variable->lokasi = $request->lokasi;
@@ -128,11 +138,16 @@ class RegisterController extends Controller
             }
 
             if($level_akun == 'user'){
+                if(Users::where('email', $request->email)->exists()){
+                    return response()->json(['errors' => 'Users dengan email ini sudah terdaftar'], 401);
+                }
+
                 //Store image
                 $icon = $request->file('profile_picture');
                 $path = $icon->store('account/users', 'public');
 
                 $$variable = new Users();
+                $$variable->identifier = $this->randomNumber('user');
                 $$variable->username = $request->username;
                 $$variable->deskripsi = $request->deskripsi;
                 $$variable->email = $request->email;
@@ -140,6 +155,7 @@ class RegisterController extends Controller
                 $$variable->nomor_hp = $request->nomor_hp;
                 $$variable->birthdate = $request->birthdate;
                 $$variable->profile_picture = $path;
+                $$variable->token = 0;
             }
             $$variable->save();
 
@@ -153,5 +169,19 @@ class RegisterController extends Controller
             DB::rollBack();
             return response()->json(['errors' => $e->getMessage()], 401);
         }
+    }
+
+    public function randomNumber($user){
+        $number = rand(1, 9999999);
+        if($user == 'user'){
+            if(Users::where('identifier', $number)->exists()){
+                return randomNumber('user');
+            }
+        }else{
+            if(Pendengar::where('identifier', $number)->exists()){
+                return randomNumber('pendengar');
+            }
+        }
+        return $number;
     }
 }
