@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\MasterKategoriQuest;
 use App\Models\MasterKategoriRating;
+use App\Models\Quests;
 
 class Admin extends Authenticatable
 {
@@ -23,5 +24,7 @@ class Admin extends Authenticatable
         return $this->belongsTo(MasterKategoriRating::class, 'admin_id');
     }
 
-    
+    public function quests(){
+        return $this->hasMany(Quests::class, 'user_id');
+    }
 }

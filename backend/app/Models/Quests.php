@@ -4,7 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Admin;
 use App\Models\KomentarQuest;
+use App\Models\Users;
 use App\Models\PivotKategoriQuest;
 use App\Models\PivotFavoritQuest;
 
@@ -24,5 +26,13 @@ class Quests extends Model
 
     public function pivot_favorit_quest(){
         return $this->hasMany(PivotFavoritQuest::class, 'quest_id');
+    }
+
+    public function admin(){
+        return $this->belongsTo(Admin::class, 'admin_id');
+    }
+
+    public function user(){
+        return $this->belongsTo(Users::class, 'user_id');
     }
 }
