@@ -14,10 +14,10 @@ class RiwayatKonsultasi extends Model
     protected $table = 'riwayat_konsultasi';
 
     public function konsultasi(){
-        return $this->belongsToMany(Konsultasi::class, 'konsultasi_id');
+        return $this->belongsTo(Konsultasi::class, 'konsultasi_id');
     }
 
     public function user(){
-        return $this->belongsToMany(Users::class, 'user_id');
+        return $this->belongsTo(Users::class, 'user_id');
     }
 }

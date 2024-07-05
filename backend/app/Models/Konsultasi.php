@@ -16,11 +16,11 @@ class Konsultasi extends Model
     protected $table = 'konsultasi';
 
     public function pendengar(){
-        return $this->belongsToMany(Pendengar::class, 'pendengar_id');
+        return $this->belongsTo(Pendengar::class, 'pendengar_id');
     }
 
     public function user(){
-        return $this->belongsToMany(Users::class, 'user_id');
+        return $this->belongsTo(Users::class, 'user_id');
     }
 
     public function riwayat_konsultasi(){

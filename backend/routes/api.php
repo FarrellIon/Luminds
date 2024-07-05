@@ -47,3 +47,7 @@ Route::group(['prefix' => 'quests'], function () {
         Route::delete('/{encrypted_id}', [QuestsController::class, 'destroy'])->name('quests.destroy');
     });
 });
+
+Route::group(['middleware' => ['auth:users']], function () {
+    Route::post('/testtt', [QuestsController::class, 'insert'])->name('quests.insert');
+});

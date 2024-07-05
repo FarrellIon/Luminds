@@ -14,10 +14,10 @@ class PivotKategoriQuest extends Model
     protected $table = 'pivot_kategori_quest';
 
     public function kategori(){
-        return $this->belongsToMany(MasterKategoriQuest::class, 'kategori_id');
+        return $this->belongsTo(MasterKategoriQuest::class, 'kategori_id');
     }
 
     public function quest(){
-        return $this->belongsToMany(Quests::class, 'quest_id');
+        return $this->belongsTo(Quests::class, 'quest_id');
     }
 }

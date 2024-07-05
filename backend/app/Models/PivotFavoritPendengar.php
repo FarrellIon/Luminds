@@ -14,10 +14,10 @@ class PivotFavoritPendengar extends Model
     protected $table = 'pivot_favorit_pendengar';
 
     public function pendengar(){
-        return $this->belongsToMany(Pendengar::class, 'pendengar_id');
+        return $this->belongsTo(Pendengar::class, 'pendengar_id');
     }
 
     public function user(){
-        return $this->belongsToMany(Users::class, 'user_id');
+        return $this->belongsTo(Users::class, 'user_id');
     }
 }

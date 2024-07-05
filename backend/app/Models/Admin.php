@@ -17,11 +17,11 @@ class Admin extends Authenticatable
     protected $table = 'admin';
 
     public function kategori_quest(){
-        return $this->belongsTo(MasterKategoriQuest::class, 'admin_id');
+        return $this->hasMany(MasterKategoriQuest::class, 'input_by');
     }
     
     public function kategori_rating(){
-        return $this->belongsTo(MasterKategoriRating::class, 'admin_id');
+        return $this->hasMany(MasterKategoriRating::class, 'input_by');
     }
 
     public function quests(){

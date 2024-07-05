@@ -14,10 +14,10 @@ class PivotKategoriPendengar extends Model
     protected $table = 'pivot_kategori_pendengar';
 
     public function kategori(){
-        return $this->belongsToMany(Kategori::class, 'kategori_id');
+        return $this->belongsTo(Kategori::class, 'kategori_id');
     }
 
     public function pendengar(){
-        return $this->belongsToMany(Pendengar::class, 'pendengar_id');
+        return $this->belongsTo(Pendengar::class, 'pendengar_id');
     }
 }

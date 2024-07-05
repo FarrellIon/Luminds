@@ -14,10 +14,10 @@ class PivotFavoritQuest extends Model
     protected $table = 'pivot_favorit_quest';
 
     public function quest(){
-        return $this->belongsToMany(Quests::class, 'quest_id');
+        return $this->belongsTo(Quests::class, 'quest_id');
     }
 
     public function user(){
-        return $this->belongsToMany(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

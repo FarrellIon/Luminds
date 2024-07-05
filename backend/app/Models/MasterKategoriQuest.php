@@ -23,6 +23,6 @@ class MasterKategoriQuest extends Model
     }
 
     public function input_by(){
-        return $this->belongsTo(Admin::class, 'admin_id');
+        return $this->belongsTo(Admin::class, 'input_by');
     }
 }
