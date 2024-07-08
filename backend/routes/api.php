@@ -55,6 +55,11 @@ Route::group(['prefix' => 'user'], function () {
 
     Route::group(['middleware' => ['auth:users']], function () {
         Route::post('/favorit-pendengar', [UserController::class, 'favoritPendengar'])->name('user.favorit-pendengar');
+        Route::post('/favorit-quest', [UserController::class, 'favoritQuest'])->name('user.favorit-quest');
+    });
+    
+    Route::group(['middleware' => ['auth:pendengar']], function () {
+        Route::post('/assign-kategori-pendengar', [UserController::class, 'assignKategoriPendengar'])->name('user.assign-kategori-pendengar');
     });
 });
 

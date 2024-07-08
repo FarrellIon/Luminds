@@ -62,27 +62,21 @@ class LoginController extends Controller
         }
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
         try{
-            if(!Auth::check()){
-                return response()->json(['messages' => 'Anda belum login'], 500);
+            if(Auth::guard('users')->check()){
+                Auth::guard('users')->logout();
+            }elseif(Auth::guard('admin')->check()){
+                Auth::guard('admin')->logout();
+            }elseif(Auth::guard('pendengar')->check()){
+                Auth::guard('pendengar')->logout();
             }else{
-                if(Auth::guard('users')->check()){
-                    Auth::guard('users')->logout();
-                };
-                if(Auth::guard('admin')->check()){
-                    Auth::guard('admin')->logout();
-                };
-                if(Auth::guard('pendengar')->check()){
-                    Auth::guard('pendengar')->logout();
-                };
-                return response()->json(['messages' => 'Berhasil logout'], 200);
+                return response()->json(['messages' => 'Anda belum login'], 500);
             }
+            return response()->json(['messages' => 'Berhasil logout'], 200);
         }catch(Exception $e){
             return response()->json(['messages' => 'Gagal logout'], 500);
         }
-        
-
     }
 }

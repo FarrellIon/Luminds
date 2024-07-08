@@ -9,10 +9,49 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Pendengar;
 use App\Models\PivotFavoritPendengar;
+use App\Models\PivotFavoritQuest;
+use App\Models\PivotKategoriPendengar;
+use App\Models\Quests;
 use App\Models\Users;
 
 class UserController extends Controller
 {
+    public function assignKategoriPendengar(Request $request){
+        $validator = Validator::make($request->all(),
+            [
+                'kategori' => 'required',
+            ],
+            [
+                'kategori.required' => 'Field kategori belum terisi',
+            ]
+        );
+        
+        if($validator->fails()){
+            return response()->json(['errors' => $validator->errors()->all()], 401);
+        }
+        
+        DB::beginTransaction();
+
+        try {
+            foreach($request->kategori as $kategori_pendengar){
+                $pivot_kategori_pendengar = new PivotKategoriPendengar();
+                $pivot_kategori_pendengar->pendengar_id = auth()->user()->id;
+                $pivot_kategori_pendengar->kategori_id = Crypt::decryptString($kategori_pendengar);
+                $pivot_kategori_pendengar->save();
+            }
+
+            $response = [
+                'message' => 'Berhasil menginput data'
+            ];
+
+            DB::commit();
+            return response()->json($response, 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['errors' => $e->getMessage()], 401);
+        }
+    }
+
     public function detail(){
         try {
             if(isset($_GET['identifier'])){
@@ -68,6 +107,33 @@ class UserController extends Controller
 
                 $response = [
                     'message' => 'Berhasil favorit pendengar'
+                ];
+
+                return response()->json($response, 200);
+            }else{
+                return response()->json(['messages' => 'Nomor unik user belum dipasang'], 401);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['errors' => $e->getMessage()], 401);
+        }
+    }
+
+    public function favoritQuest(){
+        try {
+            if(isset($_GET['quest_identifier'])){
+                $quest = Quests::where('identifier', $_GET['quest_identifier'])->first();
+
+                $pivot_favorit_quest = new PivotFavoritQuest();
+                $pivot_favorit_quest->user_id = auth()->user()->id;
+                if($quest){
+                    $pivot_favorit_quest->quest_id = $quest->id;
+                }else{
+                    return response()->json(['messages' => 'Quest dengan nomor unik tersebut tidak ditemukan'], 401);
+                }
+                $pivot_favorit_quest->save();
+
+                $response = [
+                    'message' => 'Berhasil favorit quest'
                 ];
 
                 return response()->json($response, 200);
