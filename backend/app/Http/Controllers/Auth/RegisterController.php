@@ -126,7 +126,7 @@ class RegisterController extends Controller
                 $path = $icon->store('account/pendengar', 'public');
 
                 $$variable = new Pendengar();
-                $$variable->identifier = $this->randomNumber('pendengar');
+                $$variable->identifier = $this->randomNumber();
                 $$variable->username = $request->username;
                 $$variable->deskripsi = $request->deskripsi;
                 $$variable->lokasi = $request->lokasi;
@@ -147,7 +147,7 @@ class RegisterController extends Controller
                 $path = $icon->store('account/users', 'public');
 
                 $$variable = new Users();
-                $$variable->identifier = $this->randomNumber('user');
+                $$variable->identifier = $this->randomNumber();
                 $$variable->username = $request->username;
                 $$variable->deskripsi = $request->deskripsi;
                 $$variable->email = $request->email;
@@ -171,16 +171,10 @@ class RegisterController extends Controller
         }
     }
 
-    public function randomNumber($user){
+    public function randomNumber(){
         $number = rand(1, 9999999);
-        if($user == 'user'){
-            if(Users::where('identifier', $number)->exists()){
-                return randomNumber('user');
-            }
-        }else{
-            if(Pendengar::where('identifier', $number)->exists()){
-                return randomNumber('pendengar');
-            }
+        if(Users::where('identifier', $number)->exists() || Pendengar::where('identifier', $number)->exists()){
+            return randomNumber();
         }
         return $number;
     }

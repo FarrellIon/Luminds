@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\MasterKategoriQuestController;
 use App\Http\Controllers\MasterKategoriRatingController;
 use App\Http\Controllers\QuestsController;
+use App\Http\Controllers\UserController;
 
 //Authentication
 Route::get('/token', function () {
@@ -41,10 +42,19 @@ Route::group(['prefix' => 'kategori-rating'], function () {
 Route::group(['prefix' => 'quests'], function () {
     Route::get('/', [QuestsController::class, 'get'])->name('quests.get');
 
-    Route::group(['middleware' => ['auth:admin,user']], function () {
+    Route::group(['middleware' => ['auth:admin,users']], function () {
         Route::post('/', [QuestsController::class, 'insert'])->name('quests.insert');
         Route::post('/{encrypted_id}', [QuestsController::class, 'update'])->name('quests.update');
         Route::delete('/{encrypted_id}', [QuestsController::class, 'destroy'])->name('quests.destroy');
+    });
+});
+
+//Users
+Route::group(['prefix' => 'user'], function () {
+    Route::get('/details', [UserController::class, 'detail'])->name('user.detail');
+
+    Route::group(['middleware' => ['auth:users']], function () {
+        Route::post('/favorit-pendengar', [UserController::class, 'favoritPendengar'])->name('user.favorit-pendengar');
     });
 });
 

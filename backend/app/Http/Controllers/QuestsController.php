@@ -112,6 +112,7 @@ class QuestsController extends Controller
         try {
             $variable = $this->controller_name;
             $$variable = new Quests();
+            $$variable->identifier = $this->randomNumber();
             $$variable->judul = $request->judul;
             $$variable->deskripsi = $request->deskripsi;
             $$variable->batas_waktu = $request->batas_waktu;
@@ -199,5 +200,13 @@ class QuestsController extends Controller
             DB::rollBack();
             return response()->json(['errors' => $e->getMessage()], 401);
         }
+    }
+
+    public function randomNumber(){
+        $number = rand(1, 999999999);
+        if(Quests::where('identifier', $number)->exists()){
+            return randomNumber();
+        }
+        return $number;
     }
 }
