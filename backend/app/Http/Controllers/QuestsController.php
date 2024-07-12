@@ -88,6 +88,8 @@ class QuestsController extends Controller
     }
     
     public function insert(Request $request){
+        $userIsAdmin = Auth::guard('admin')->check();
+        
         $validator = Validator::make($request->all(),
             [
                 'judul' => 'required',

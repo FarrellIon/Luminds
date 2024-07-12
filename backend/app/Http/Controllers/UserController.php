@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use App\Models\JadwalTersediaPendengar;
 use App\Models\Pendengar;
+use App\Models\PekerjaanPendengar;
 use App\Models\PivotFavoritPendengar;
 use App\Models\PivotFavoritQuest;
 use App\Models\PivotKategoriPendengar;
@@ -52,6 +54,88 @@ class UserController extends Controller
         }
     }
 
+    public function assignPekerjaanPendengar(Request $request){
+        $validator = Validator::make($request->all(),
+            [
+                'nama' => 'required',
+                'perusahaan' => 'required',
+                'waktu_mulai' => 'required',
+            ],
+            [
+                'nama.required' => 'Field nama belum terisi',
+                'perusahaan.required' => 'Field perusahaan belum terisi',
+                'waktu_mulai.required' => 'Field waktu mulai belum terisi',
+            ]
+        );
+        
+        if($validator->fails()){
+            return response()->json(['errors' => $validator->errors()->all()], 401);
+        }
+        
+        DB::beginTransaction();
+
+        try {
+            $pivot_kategori_pendengar = new PekerjaanPendengar();
+            $pivot_kategori_pendengar->pendengar_id = auth()->user()->id;
+            $pivot_kategori_pendengar->nama = $request->nama;
+            $pivot_kategori_pendengar->perusahaan = $request->perusahaan;
+            $pivot_kategori_pendengar->waktu_mulai = $request->waktu_mulai;
+            if($request->waktu_selesai){
+                $pivot_kategori_pendengar->waktu_selesai = $request->waktu_selesai;
+                $pivot_kategori_pendengar->status_current = false;
+            }else{
+                $pivot_kategori_pendengar->status_current = true;
+            }
+            $pivot_kategori_pendengar->save();
+
+            $response = [
+                'message' => 'Berhasil menginput data'
+            ];
+
+            DB::commit();
+            return response()->json($response, 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['errors' => $e->getMessage()], 401);
+        }
+    }
+
+    public function assignJadwalPendengar(Request $request){
+        $validator = Validator::make($request->all(),
+            [
+                'tanggal' => 'required',
+            ],
+            [
+                'tanggal.required' => 'Field tanggal belum terisi',
+            ]
+        );
+        
+        if($validator->fails()){
+            return response()->json(['errors' => $validator->errors()->all()], 401);
+        }
+        
+        DB::beginTransaction();
+
+        try {
+            foreach($request->tanggal as $tanggal){
+                $pivot_kategori_pendengar = new JadwalTersediaPendengar();
+                $pivot_kategori_pendengar->pendengar_id = auth()->user()->id;
+                $pivot_kategori_pendengar->tanggal = $tanggal;
+                $pivot_kategori_pendengar->save();
+            }
+
+            $response = [
+                'message' => 'Berhasil menginput data'
+            ];
+
+            DB::commit();
+            return response()->json($response, 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['errors' => $e->getMessage()], 401);
+        }
+    }
+
     public function detail(){
         try {
             if(isset($_GET['identifier'])){
@@ -68,6 +152,13 @@ class UserController extends Controller
                     $sendResponse = $user;
                 }elseif($pendengar){
                     $pendengar['tipe_user'] = "pendengar";
+                    $pendengar['kategori'] = $pendengar->pivot_kategori_pendengar;
+                    $pendengar['pekerjaan'] = $pendengar->pekerjaan_pendengar;
+
+                    foreach ($pendengar['pekerjaan'] as $pekerjaan) {
+                        unset($pekerjaan['id']);
+                        unset($pekerjaan['pendengar_id']);
+                    }
     
                     unset(
                         $pendengar['id']

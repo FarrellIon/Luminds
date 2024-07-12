@@ -60,6 +60,8 @@ Route::group(['prefix' => 'user'], function () {
     
     Route::group(['middleware' => ['auth:pendengar']], function () {
         Route::post('/assign-kategori-pendengar', [UserController::class, 'assignKategoriPendengar'])->name('user.assign-kategori-pendengar');
+        Route::post('/assign-pekerjaan-pendengar', [UserController::class, 'assignPekerjaanPendengar'])->name('user.assign-pekerjaan-pendengar');
+        Route::post('/assign-jadwal-pendengar', [UserController::class, 'assignJadwalPendengar'])->name('user.assign-jadwal-pendengar');
     });
 });
 
