@@ -89,19 +89,23 @@ class QuestsController extends Controller
     
     public function insert(Request $request){
         $userIsAdmin = Auth::guard('admin')->check();
-        
+
         $validator = Validator::make($request->all(),
             [
                 'judul' => 'required',
                 'deskripsi' => 'required',
                 'batas_waktu' => 'required',
                 'kategori_quest' => 'required',
+                'max_partisipan' => ($userIsAdmin) ? 'required' : '',
+                'hadiah' => ($userIsAdmin) ? 'required' : '',
             ],
             [
                 'judul.required' => 'Field judul belum terisi',
                 'deskripsi.required' => 'Field deskripsi belum terisi',
                 'batas_waktu.required' => 'Field batas waktu belum terisi',
                 'kategori_quest.required' => 'Field kategori quest belum terisi',
+                'max_partisipan.required' => 'Field max partisipan belum terisi',
+                'hadiah.required' => 'Field hadiah belum terisi',
             ]
         );
         
@@ -122,6 +126,10 @@ class QuestsController extends Controller
                 $$variable->user_id = auth()->user()->id;
             }else{
                 $$variable->admin_id = auth()->user()->id;
+            }
+            if($userIsAdmin){
+                $$variable->max_partisipan = $request->max_partisipan;
+                $$variable->hadiah = $request->hadiah;
             }
             $$variable->save();
 
