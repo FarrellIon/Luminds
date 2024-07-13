@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\KomentarQuest;
-use App\Models\Konsultasi;
+use App\Models\PesananKonsultasi;
 use App\Models\Quests;
 use App\Models\PivotFavoritPendengar;
 use App\Models\PivotRatingPendengar;
@@ -24,9 +24,9 @@ class Users extends Authenticatable
     public function komentar_quest(){
         return $this->hasMany(KomentarQuest::class, 'user_id');
     }
-    
-    public function konsultasi(){
-        return $this->hasMany(Konsultasi::class, 'user_id');
+
+    public function pesanan_konsultasi(){
+        return $this->hasMany(PesananKonsultasi::class, 'user_id');
     }
     
     public function quests(){

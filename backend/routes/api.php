@@ -8,6 +8,7 @@ use App\Http\Controllers\MasterKategoriQuestController;
 use App\Http\Controllers\MasterKategoriRatingController;
 use App\Http\Controllers\QuestsController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\KonsultasiController;
 
 //Authentication
 Route::get('/token', function () {
@@ -65,6 +66,18 @@ Route::group(['prefix' => 'user'], function () {
     });
 });
 
-Route::group(['middleware' => ['auth:users']], function () {
-    Route::post('/testtt', [QuestsController::class, 'insert'])->name('quests.insert');
+//Konsultasi
+Route::group(['prefix' => 'konsultasi'], function () {
+    Route::get('/layanan', [KonsultasiController::class, 'getLayanan'])->name('konsultasi.getLayanan');
+    Route::post('/pesan-konsultasi', [KonsultasiController::class, 'pesanKonsultasi'])->name('konsultasi.pesanKonsultasi');
+
+    Route::group(['middleware' => ['auth:users']], function () {
+        Route::post('/favorit-pendengar', [UserController::class, 'favoritPendengar'])->name('user.favorit-pendengar');
+        Route::post('/favorit-quest', [UserController::class, 'favoritQuest'])->name('user.favorit-quest');
+    });
+    
+    Route::group(['middleware' => ['auth:pendengar']], function () {
+        Route::post('/setujui-konsultasi', [KonsultasiController::class, 'setujuiKonsultasi'])->name('konsultasi.setujuiKonsultasi');
+        Route::post('/tolak-konsultasi', [KonsultasiController::class, 'tolakKonsultasi'])->name('konsultasi.tolakKonsultasi');
+    });
 });

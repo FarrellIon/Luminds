@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\JadwalTersediaPendengar;
-use App\Models\Konsultasi;
+use App\Models\PesananKonsultasi;
 use App\Models\PekerjaanPendengar;
 use App\Models\PivotFavoritPendengar;
 use App\Models\PivotRatingPendengar;
@@ -24,8 +24,8 @@ class Pendengar extends Authenticatable
         return $this->hasMany(JadwalTersediaPendengar::class, 'pendengar_id');
     }
 
-    public function konsultasi(){
-        return $this->hasMany(Konsultasi::class, 'pendengar_id');
+    public function pesanan_konsultasi(){
+        return $this->hasMany(PesananKonsultasi::class, 'pendengar_id');
     }
 
     public function pekerjaan_pendengar(){

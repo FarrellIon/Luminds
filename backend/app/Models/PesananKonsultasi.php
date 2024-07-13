@@ -9,11 +9,11 @@ use App\Models\Users;
 use App\Models\RiwayatKonsultasi;
 use App\Models\ChatKonsultasi;
 
-class Konsultasi extends Model
+class PesananKonsultasi extends Model
 {
     use HasFactory;
 
-    protected $table = 'konsultasi';
+    protected $table = 'layanan_konsultasi';
 
     public function pendengar(){
         return $this->belongsTo(Pendengar::class, 'pendengar_id');
