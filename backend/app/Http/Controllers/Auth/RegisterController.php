@@ -48,6 +48,8 @@ class RegisterController extends Controller
                     'nomor_hp' => 'required',
                     'birthdate' => 'required|date',
                     'profile_picture' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+                    'tipe_layanan' => 'required',
+                    'harga_per_layanan' => 'required',
                 ],
                 [
                     'username.required' => 'Field username belum terisi',
@@ -62,6 +64,8 @@ class RegisterController extends Controller
                     'profile_picture.image' => 'Profile picture harus file gambar',
                     'profile_picture.mimes' => 'File profile picture harus berkestensi jpeg, png, ataupun jpg',
                     'profile_picture.max' => 'File profile picture harus berukuran dibawah 2MB',
+                    'tipe_layanan.required' => 'Field tipe layanan belum terisi',
+                    'harga_per_layanan.required' => 'Field harga per layanan belum terisi',
                 ]
             );
         }
@@ -135,6 +139,8 @@ class RegisterController extends Controller
                 $$variable->nomor_hp = $request->nomor_hp;
                 $$variable->birthdate = $request->birthdate;
                 $$variable->profile_picture = $path;
+                $$variable->tipe_layanan = $request->tipe_layanan;
+                $$variable->harga_per_layanan = $request->harga_per_layanan;
             }
 
             if($level_akun == 'user'){

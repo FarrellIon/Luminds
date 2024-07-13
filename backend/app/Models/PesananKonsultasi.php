@@ -13,7 +13,7 @@ class PesananKonsultasi extends Model
 {
     use HasFactory;
 
-    protected $table = 'layanan_konsultasi';
+    protected $table = 'pesanan_konsultasi';
 
     public function pendengar(){
         return $this->belongsTo(Pendengar::class, 'pendengar_id');
@@ -24,10 +24,14 @@ class PesananKonsultasi extends Model
     }
 
     public function riwayat_konsultasi(){
-        return $this->hasMany(RiwayatKonsultasi::class, 'konsultasi_id');
+        return $this->hasMany(RiwayatKonsultasi::class, 'pesanan_konsultasi_id');
     }
 
     public function chat_konsultasi(){
-        return $this->hasMany(ChatKonsultasi::class, 'konsultasi_id');
+        return $this->hasMany(ChatKonsultasi::class, 'pesanan_konsultasi_id');
+    }
+
+    public function report_konsultasi(){
+        return $this->hasMany(ChatKonsultasi::class, 'pesanan_konsultasi_id');
     }
 }

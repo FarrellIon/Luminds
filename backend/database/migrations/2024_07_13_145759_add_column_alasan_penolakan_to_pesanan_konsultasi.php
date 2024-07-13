@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('pesanan_konsultasi', function (Blueprint $table) {
-            $table->dropColumn('harga');
-            $table->enum('status', ['ditolak', 'menunggu_approval', 'menunggu_jadwal', 'sedang_berlangsung', 'selesai', 'sudah_rating'])->after('pendengar_id');
+            $table->string('alasan_penolakan')->after('status')->nullable();
         });
     }
 
@@ -23,8 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('pesanan_konsultasi', function (Blueprint $table) {
-            $table->integer('harga')->after('pendengar_id');
-            $table->dropColumn('status');
+            $table->dropColumn('alasan_penolakan');
         });
     }
 };

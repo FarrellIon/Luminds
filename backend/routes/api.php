@@ -68,16 +68,16 @@ Route::group(['prefix' => 'user'], function () {
 
 //Konsultasi
 Route::group(['prefix' => 'konsultasi'], function () {
-    Route::get('/layanan', [KonsultasiController::class, 'getLayanan'])->name('konsultasi.getLayanan');
-    Route::post('/pesan-konsultasi', [KonsultasiController::class, 'pesanKonsultasi'])->name('konsultasi.pesanKonsultasi');
+    Route::get('/list-pendengar', [KonsultasiController::class, 'listPendengar'])->name('konsultasi.list-pendengar');
 
     Route::group(['middleware' => ['auth:users']], function () {
-        Route::post('/favorit-pendengar', [UserController::class, 'favoritPendengar'])->name('user.favorit-pendengar');
-        Route::post('/favorit-quest', [UserController::class, 'favoritQuest'])->name('user.favorit-quest');
+        Route::post('/pesan', [KonsultasiController::class, 'pesanKonsultasi'])->name('konsultasi.pesan');
+        Route::post('/report', [KonsultasiController::class, 'reportKonsultasi'])->name('konsultasi.report');
+        Route::get('/riwayat', [KonsultasiController::class, 'riwayatKonsultasi'])->name('konsultasi.riwayat');
     });
-    
+
     Route::group(['middleware' => ['auth:pendengar']], function () {
-        Route::post('/setujui-konsultasi', [KonsultasiController::class, 'setujuiKonsultasi'])->name('konsultasi.setujuiKonsultasi');
-        Route::post('/tolak-konsultasi', [KonsultasiController::class, 'tolakKonsultasi'])->name('konsultasi.tolakKonsultasi');
+        Route::post('/setujui', [KonsultasiController::class, 'setujuiKonsultasi'])->name('konsultasi.setujui');
+        Route::post('/tolak', [KonsultasiController::class, 'tolakKonsultasi'])->name('konsultasi.tolak');
     });
 });

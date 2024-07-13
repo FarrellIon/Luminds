@@ -52,4 +52,8 @@ class Users extends Authenticatable
     public function chat_konsultasi(){
         return $this->hasMany(ChatKonsultasi::class, 'user_id');
     }
+
+    public function report_konsultasi(){
+        return $this->hasMany(ChatKonsultasi::class, 'user_id');
+    }
 }

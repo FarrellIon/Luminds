@@ -146,7 +146,8 @@ class UserController extends Controller
                     $user['tipe_user'] = "user";
     
                     unset(
-                        $user['id']
+                        $user['id'],
+                        $user['password']
                     );
 
                     $sendResponse = $user;
