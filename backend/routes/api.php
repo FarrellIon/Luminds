@@ -48,6 +48,15 @@ Route::group(['prefix' => 'quests'], function () {
         Route::post('/{encrypted_id}', [QuestsController::class, 'update'])->name('quests.update');
         Route::delete('/{encrypted_id}', [QuestsController::class, 'destroy'])->name('quests.destroy');
     });
+
+    Route::group(['prefix' => 'comments'], function () {
+        Route::group(['middleware' => ['auth:users']], function () {
+            Route::post('/post', [QuestsController::class, 'postComment'])->name('quests.comments.post');
+        });
+        Route::group(['middleware' => ['auth:users,admin']], function () {
+            Route::post('/mark-as-best', [QuestsController::class, 'markAsBest'])->name('quests.comments.mark-as-best');
+        });
+    });
 });
 
 //Users

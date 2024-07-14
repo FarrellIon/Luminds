@@ -8,9 +8,10 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Quests;
-use App\Models\PivotKategoriQuest;
+use App\Models\KomentarQuest;
 use App\Models\MasterKategoriQuest;
+use App\Models\PivotKategoriQuest;
+use App\Models\Quests;
 
 class QuestsController extends Controller
 {
@@ -212,10 +213,110 @@ class QuestsController extends Controller
         }
     }
 
+    public function postComment(Request $request){
+        $validator = Validator::make($request->all(),
+            [
+                'komentar' => 'required',
+            ],
+            [
+                'komentar.required' => 'Field komentar belum terisi',
+            ]
+        );
+        
+        if($validator->fails()){
+            return response()->json(['errors' => $validator->errors()->all()], 401);
+        }
+
+        if(isset($_GET['quest_identifier'])){
+            DB::beginTransaction();
+
+            try {
+                $quest_obj = Quests::where('identifier', $_GET['quest_identifier'])->first();
+
+                $variable = $this->controller_name;
+                $$variable = new KomentarQuest();
+                $$variable->identifier = $this->randomNumberKomentar();
+                if($quest_obj){
+                    $$variable->quest_id = $quest_obj->id;
+                }else{
+                    return response()->json(['messages' => 'Quest dengan nomor unik tersebut tidak ditemukan'], 401);
+                }
+                $$variable->user_id = auth()->user()->id;
+                $$variable->komentar = $request->komentar;
+                $$variable->status_terbaik = false;
+                $$variable->save();
+
+                $response = [
+                    'message' => 'Berhasil menginput data'
+                ];
+
+                DB::commit();
+                return response()->json($response, 200);
+            } catch (\Exception $e) {
+                DB::rollBack();
+                return response()->json(['errors' => $e->getMessage()], 401);
+            }
+        }else{
+            return response()->json(['messages' => 'Nomor unik user belum dipasang'], 401);
+        }
+    }
+
+    public function markAsBest(Request $request){
+        $userIsAdmin = Auth::guard('admin')->check();
+
+        if(isset($_GET['comment_identifier'])){
+            DB::beginTransaction();
+
+            try {
+                $komentar_quest = KomentarQuest::where('identifier', $_GET['comment_identifier'])->first();
+
+                if($komentar_quest){
+                    if($userIsAdmin){
+                        if($komentar_quest->quest->admin_id != auth()->user()->id){
+                            return response()->json(['messages' => 'Anda bukan pembuat quest ini'], 401);
+                        }
+                    }else{
+                        if($komentar_quest->quest->user_id != auth()->user()->id){
+                            return response()->json(['messages' => 'Anda bukan pembuat quest ini'], 401);
+                        }
+                    }
+
+                    KomentarQuest::where('quest_id', $komentar_quest->quest->id)
+                    ->update(['status_terbaik' => false]);
+
+                    $komentar_quest->status_terbaik = true;
+                    $komentar_quest->save();
+                }else{
+                    return response()->json(['messages' => 'Quest dengan nomor unik tersebut tidak ditemukan'], 401);
+                }
+
+                $response = [
+                    'message' => 'Berhasil menginput data'
+                ];
+
+                DB::commit();
+                return response()->json($response, 200);
+            } catch (\Exception $e) {
+                DB::rollBack();
+                return response()->json(['errors' => $e->getMessage()], 401);
+            }
+        }else{
+            return response()->json(['messages' => 'Nomor unik user belum dipasang'], 401);
+        }
+    }
+
     public function randomNumber(){
         $number = rand(1, 999999999);
         if(Quests::where('identifier', $number)->exists()){
             return randomNumber();
+        }
+        return $number;
+    }
+
+    public function randomNumberKomentar(){
+        $number = rand(1, 999999999);
+        if(KomentarQuest::where('identifier', $number)->exists()){
+            return randomNumberKomentar();
         }
         return $number;
     }

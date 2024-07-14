@@ -10,9 +10,12 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\JadwalTersediaPendengar;
 use App\Models\Pendengar;
 use App\Models\PekerjaanPendengar;
+use App\Models\PesananKonsultasi;
 use App\Models\PivotFavoritPendengar;
 use App\Models\PivotFavoritQuest;
 use App\Models\PivotKategoriPendengar;
+use App\Models\PivotKategoriRatingPendengar;
+use App\Models\PivotRatingPendengar;
 use App\Models\Quests;
 use App\Models\Users;
 
@@ -155,15 +158,14 @@ class UserController extends Controller
                     $pendengar['tipe_user'] = "pendengar";
                     $pendengar['kategori'] = $pendengar->pivot_kategori_pendengar;
                     $pendengar['pekerjaan'] = $pendengar->pekerjaan_pendengar;
+                    $pendengar['average_rating'] = $pendengar->average_rating;
+                    $pendengar['jumlah_konsultasi'] = $pendengar->jumlah_konsultasi;
+                    $pendengar['kategori_rating'] = $pendengar->kategori_rating;
 
                     foreach ($pendengar['pekerjaan'] as $pekerjaan) {
                         unset($pekerjaan['id']);
                         unset($pekerjaan['pendengar_id']);
                     }
-    
-                    unset(
-                        $pendengar['id']
-                    );
 
                     $sendResponse = $pendengar;
                 }else{
@@ -237,27 +239,58 @@ class UserController extends Controller
         }
     }
 
-    public function rating(){
-        try {
-            if(isset($_GET['quest_identifier'])){
-                $quest = Quests::where('identifier', $_GET['quest_identifier'])->first();
+    public function rating(Request $request){
+        $validator = Validator::make($request->all(),
+            [
+                'rating' => 'required',
+                'kategori_rating' => 'required',
+            ],
+            [
+                'rating.required' => 'Field rating belum terisi',
+                'kategori_rating.required' => 'Field kategori rating belum terisi',
+            ]
+        );
+        
+        if($validator->fails()){
+            return response()->json(['errors' => $validator->errors()->all()], 401);
+        }
 
-                $pivot_favorit_quest = new PivotFavoritQuest();
-                $pivot_favorit_quest->user_id = auth()->user()->id;
-                if($quest){
-                    $pivot_favorit_quest->quest_id = $quest->id;
+        try {
+            if(isset($_GET['pendengar_identifier']) && isset($_GET['konsultasi_identifier'])){
+                $konsultasi = PesananKonsultasi::where('identifier', $_GET['konsultasi_identifier'])->first();
+                $pendengar = Pendengar::where('identifier', $_GET['pendengar_identifier'])->first();
+
+                $pivot_rating_pendengar = new PivotRatingPendengar();
+                if($konsultasi){
+                    $pivot_rating_pendengar->pesanan_konsultasi_id = $konsultasi->id;
                 }else{
-                    return response()->json(['messages' => 'Quest dengan nomor unik tersebut tidak ditemukan'], 401);
+                    return response()->json(['messages' => 'Konsultasi dengan nomor unik tersebut tidak ditemukan'], 401);
                 }
-                $pivot_favorit_quest->save();
+                $pivot_rating_pendengar->user_id = auth()->user()->id;
+                if($pendengar){
+                    $pivot_rating_pendengar->pendengar_id = $pendengar->id;
+                }else{
+                    return response()->json(['messages' => 'Pendengar dengan nomor unik tersebut tidak ditemukan'], 401);
+                }
+                $pivot_rating_pendengar->rating = $request->rating;
+                $pivot_rating_pendengar->catatan = $request->catatan;
+                $pivot_rating_pendengar->save();
+
+                foreach($request->kategori_rating as $kategori_rating){
+                    $pivot_kategori_rating_pendengar = new PivotKategoriRatingPendengar();
+                    $pivot_kategori_rating_pendengar->pesanan_konsultasi_id = $konsultasi->id;
+                    $pivot_kategori_rating_pendengar->pendengar_id = $pendengar->id;
+                    $pivot_kategori_rating_pendengar->kategori_rating_id = Crypt::decryptString($kategori_rating);
+                    $pivot_kategori_rating_pendengar->save();
+                }
 
                 $response = [
-                    'message' => 'Berhasil favorit quest'
+                    'message' => 'Berhasil memberikan rating'
                 ];
 
                 return response()->json($response, 200);
             }else{
-                return response()->json(['messages' => 'Nomor unik user belum dipasang'], 401);
+                return response()->json(['messages' => 'Nomor unik pendengar dan konsultasi belum dipasang'], 401);
             }
         } catch (\Exception $e) {
             return response()->json(['errors' => $e->getMessage()], 401);
