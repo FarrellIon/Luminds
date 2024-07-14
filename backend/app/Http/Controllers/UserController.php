@@ -236,4 +236,31 @@ class UserController extends Controller
             return response()->json(['errors' => $e->getMessage()], 401);
         }
     }
+
+    public function rating(){
+        try {
+            if(isset($_GET['quest_identifier'])){
+                $quest = Quests::where('identifier', $_GET['quest_identifier'])->first();
+
+                $pivot_favorit_quest = new PivotFavoritQuest();
+                $pivot_favorit_quest->user_id = auth()->user()->id;
+                if($quest){
+                    $pivot_favorit_quest->quest_id = $quest->id;
+                }else{
+                    return response()->json(['messages' => 'Quest dengan nomor unik tersebut tidak ditemukan'], 401);
+                }
+                $pivot_favorit_quest->save();
+
+                $response = [
+                    'message' => 'Berhasil favorit quest'
+                ];
+
+                return response()->json($response, 200);
+            }else{
+                return response()->json(['messages' => 'Nomor unik user belum dipasang'], 401);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['errors' => $e->getMessage()], 401);
+        }
+    }
 }

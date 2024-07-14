@@ -57,6 +57,7 @@ Route::group(['prefix' => 'user'], function () {
     Route::group(['middleware' => ['auth:users']], function () {
         Route::post('/favorit-pendengar', [UserController::class, 'favoritPendengar'])->name('user.favorit-pendengar');
         Route::post('/favorit-quest', [UserController::class, 'favoritQuest'])->name('user.favorit-quest');
+        Route::post('/rating', [UserController::class, 'rating'])->name('user.rating');
     });
     
     Route::group(['middleware' => ['auth:pendengar']], function () {

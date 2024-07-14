@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Pendengar;
 use App\Models\PesananKonsultasi;
 use App\Models\ReportKonsultasi;
+use App\Models\Users;
 
 class KonsultasiController extends Controller
 {
@@ -68,6 +69,8 @@ class KonsultasiController extends Controller
             }else{
                 return response()->json(['errors' => 'Belum memasukkan nomor unik pendengar'], 401);
             }
+
+            $this->purchase($pendengar->harga_per_layanan);
 
             $$variable = new PesananKonsultasi();
             $$variable->identifier = $this->randomNumber();
@@ -177,8 +180,12 @@ class KonsultasiController extends Controller
             }
             
             if($pesanan_konsultasi->pendengar_id == auth()->user()->id){
-                $pesanan_konsultasi->status = 'menunggu_jadwal';
-                $pesanan_konsultasi->save();
+                if($pesanan_konsultasi->status == 'menunggu_approval'){
+                    $pesanan_konsultasi->status = 'menunggu_jadwal';
+                    $pesanan_konsultasi->save();
+                }else{
+                    return response()->json(['errors' => 'Konsultasi ini sudah disetujui'], 401);
+                }
             }else{
                 return response()->json(['errors' => 'Anda tidak punya akses untuk konsultasi ini'], 401);
             }
@@ -210,8 +217,14 @@ class KonsultasiController extends Controller
             }
             
             if($pesanan_konsultasi->pendengar_id == auth()->user()->id){
-                $pesanan_konsultasi->status = 'ditolak';
-                $pesanan_konsultasi->save();
+                if($pesanan_konsultasi->status == 'menunggu_approval'){
+                    $pesanan_konsultasi->status = 'ditolak';
+                    $pesanan_konsultasi->save();
+    
+                    $this->refund($pesanan_konsultasi->pendengar->harga_per_layanan, $pesanan_konsultasi->user_id);
+                }else{
+                    return response()->json(['errors' => 'Konsultasi ini sudah ditolak'], 401);
+                }
             }else{
                 return response()->json(['errors' => 'Anda tidak punya akses untuk konsultasi ini'], 401);
             }
@@ -234,5 +247,25 @@ class KonsultasiController extends Controller
             return randomNumber();
         }
         return $number;
+    }
+    
+    public function purchase($amount){
+        if(auth()->user()->token - $amount <= 0){
+            return response()->json(['errors' => 'Token anda tidak cukup'], 401);
+        }else{
+            auth()->user()->token -= $amount;
+            auth()->user()->save();
+        }
+    }
+
+    public function refund($amount, $user_id){
+        $user = Users::find($user_id);
+
+        if(!$user){
+            return response()->json(['errors' => 'User dalam konsultasi ini tidak ditemukan'], 401);
+        }
+
+        $user->token += $amount;
+        $user->save();
     }
 }
