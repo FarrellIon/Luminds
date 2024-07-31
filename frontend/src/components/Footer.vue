@@ -54,7 +54,7 @@
                 <a>
                     <fa icon="fab fa-whatsapp" class="text-3xl"></fa>
                 </a>
-                <a>
+                <a href="https://www.instagram.com/luminds.id/">
                     <fa icon="fab fa-instagram" class="text-3xl"></fa>
                 </a>
                 <a>
