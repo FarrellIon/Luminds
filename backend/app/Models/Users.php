@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 use App\Models\KomentarQuest;
 use App\Models\PesananKonsultasi;
 use App\Models\Quests;
@@ -15,7 +16,7 @@ use App\Models\RiwayatKonsultasi;
 use App\Models\ChatKonsultasi;
 
 
-class Users extends Authenticatable
+class Users extends Authenticatable implements JWTSubject
 {
     use HasFactory;
 
@@ -55,5 +56,25 @@ class Users extends Authenticatable
 
     public function report_konsultasi(){
         return $this->hasMany(ChatKonsultasi::class, 'user_id');
+    }
+    
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }
