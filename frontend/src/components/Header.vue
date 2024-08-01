@@ -19,12 +19,10 @@
             <img src="@/assets/logo/full-white-logo.svg" class="w-1/3">
         </div>
         
-        <div class="flex items-center justify-center *:px-3">
+        <div class="flex items-center justify-center *:px-3">f
             <RouterLink to="/">Beranda</RouterLink>
-            <RouterLink to="/team">Tim</RouterLink>
-            <RouterLink to="/">Fitur</RouterLink>
-            <RouterLink to="/">Workshop</RouterLink>
-            <RouterLink to="/">Quest</RouterLink>
+            <RouterLink to="/team">Tentang Kami</RouterLink>
+            <RouterLink to="/">Berita</RouterLink>
         </div>
 
         <div class="flex w-1/3 justify-end">

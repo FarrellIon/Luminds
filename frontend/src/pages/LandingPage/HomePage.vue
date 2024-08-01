@@ -285,7 +285,7 @@
     <div class="flex flex-col w-full bg-white py-32 px-16 gap-16 items-center justify-center">
         <div class="flex flex-col gap-3">
             <p class="font-semibold tracking-wide text-blue-400">MITRA KAMI</p>
-            <h1 class="text-4xl font-bold tracking-tight text-darkTeal">Bergerak bersama dengan para pendukung kami.</h1>
+            <h1 class="text-4xl font-bold tracking-tight text-darkTeal">Bergerak bersama dengan para mitra pendukung kami.</h1>
         </div>
 
         <div class="flex gap-10 items-center justify-center">
