@@ -9,6 +9,7 @@ use App\Http\Controllers\MasterKategoriRatingController;
 use App\Http\Controllers\QuestsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\KonsultasiController;
+use App\Http\Controllers\ChatKonsultasiController;
 
 //Authentication
 Route::get('/token', function () {
@@ -89,5 +90,10 @@ Route::group(['prefix' => 'konsultasi'], function () {
     Route::group(['middleware' => ['auth:pendengar']], function () {
         Route::post('/setujui', [KonsultasiController::class, 'setujuiKonsultasi'])->name('konsultasi.setujui');
         Route::post('/tolak', [KonsultasiController::class, 'tolakKonsultasi'])->name('konsultasi.tolak');
+    });
+    
+    Route::group(['prefix' => 'chat'], function () {
+        Route::get('/getToken', [ChatKonsultasiController::class, 'getToken'])->name('konsultasi.chat.get-token');
+        Route::post('/sendChat', [ChatKonsultasiController::class, 'sendChat'])->name('konsultasi.chat.send-chat');
     });
 });

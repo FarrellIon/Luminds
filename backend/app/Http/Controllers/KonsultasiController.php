@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use GetStream\StreamChat\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
@@ -189,6 +190,14 @@ class KonsultasiController extends Controller
             }else{
                 return response()->json(['errors' => 'Anda tidak punya akses untuk konsultasi ini'], 401);
             }
+
+            $nama_user = Auth::guard('users')->user()->username.'_user';
+            $nama_pendengar = $pesanan_konsultasi->pendengar->username.'_pendengar';
+            $nama_channel = "Konsultasi-".$nama_user.'-'.$nama_pendengar;
+            $client = new Client(env('GETSTREAM_API_KEY'), env('GETSTREAM_SECRET'));
+            $client->upsertUsers([['id' => $nama_user, 'role' => 'user'], ['id' => $nama_pendengar, 'role' => 'admin']]);
+            $channel = $client->Channel("messaging", $nama_channel, ['members' => [$nama_user, $nama_pendengar]]);
+            $channel->create($nama_channel);
 
             $response = [
                 'message' => 'Berhasil setujui'
