@@ -80,6 +80,7 @@ Route::group(['prefix' => 'user'], function () {
 //Konsultasi
 Route::group(['prefix' => 'konsultasi'], function () {
     Route::get('/list-pendengar', [KonsultasiController::class, 'listPendengar'])->name('konsultasi.list-pendengar');
+    Route::get('/list-user', [KonsultasiController::class, 'listUser'])->name('konsultasi.list-user');
 
     Route::group(['middleware' => ['auth:users']], function () {
         Route::post('/pesan', [KonsultasiController::class, 'pesanKonsultasi'])->name('konsultasi.pesan');

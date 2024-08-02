@@ -41,6 +41,32 @@ class KonsultasiController extends Controller
             return response()->json(['errors' => $e->getMessage()], 401);
         }
     }
+    
+    public function listUser(){
+        try {
+            $variable = $this->controller_name;
+            $$variable = Users::all();
+
+            $$variable = $$variable->map(function($singular){
+                $singular['encrypted_id'] = Crypt::encryptString($singular->id);
+
+                unset(
+                    $singular['id'],
+                    $singular['password']
+                );
+
+                return $singular;
+            });
+
+            $response = [
+                'data' => $$variable
+            ];
+
+            return response()->json($response, 200);
+        } catch (\Exception $e) {
+            return response()->json(['errors' => $e->getMessage()], 401);
+        }
+    }
 
     public function pesanKonsultasi(Request $request){
         $validator = Validator::make($request->all(),
