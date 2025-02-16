@@ -16,11 +16,16 @@ export default {
         "beige": "#FFEFD1",
         "mocca": "#BEB096",
         "bean": "#5B503C"
+      },
+      backgroundImage: {
+        'classic-dark': "url('/src/assets/img/classic.png')",
+        'classic-light': "url('/src/assets/img/classic2.png')"
       }
     },
   },
   plugins: [
-    require('flowbite/plugin')
+    require('flowbite/plugin'),
+    require('@lostisworld/tailwind-mask'),
   ],
 }
 

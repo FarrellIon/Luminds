@@ -36,7 +36,7 @@
                     </div>
                     <div class="flex gap-3 items-center">
                         <fa icon="fas fa-phone" fixed-width />
-                        <p>+62 812 3456 7890</p>
+                        <p>+62 895 3299 88833</p>
                     </div>
                     <div class="flex gap-3 items-center">
                         <fa icon="fas fa-envelope" fixed-width />
@@ -57,7 +57,7 @@
                 <a href="https://www.instagram.com/luminds.id/">
                     <fa icon="fab fa-instagram" class="text-3xl"></fa>
                 </a>
-                <a>
+                <!-- <a>
                     <fa icon="fab fa-tiktok" class="text-3xl"></fa>
                 </a>
                 <a>
@@ -65,7 +65,7 @@
                 </a>
                 <a>
                     <fa icon="fab fa-linkedin" class="text-3xl"></fa>
-                </a>
+                </a> -->
             </div>
         </div>
     </div>

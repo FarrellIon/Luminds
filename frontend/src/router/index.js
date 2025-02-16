@@ -2,11 +2,16 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 // Views
 import MainView from '../views/MainView.vue'
+import DashboardView from '../views/DashboardView.vue'
 
 // Pages
 // --- Landing Page ---
 import HomePage from '../pages/LandingPage/HomePage.vue'
 import TeamPage from '../pages/LandingPage/TeamPage.vue'
+
+// Dashboard Pages
+import DashboardHome from '../pages/Dashboard/Home.vue'
+import DashboardQuest from '../pages/Dashboard/Quest.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,6 +34,24 @@ const router = createRouter({
         }
       ]
     },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: DashboardView,
+      redirect: {path: "/dashboard/home"},
+      children: [
+        {
+          path: '/dashboard/home',
+          name: 'dashboardHome',
+          component: DashboardHome
+        },
+        {
+          path: '/dashboard/quest',
+          name: 'dashboardQuest',
+          component: DashboardQuest
+        }
+      ]
+    }
   ]
 })
 

@@ -17,4 +17,7 @@ lerna-debug.log*
 *.sln
 *.sw?
 
+oldbackend
+oldbackend/*
+
 *.tsbuildinfo
